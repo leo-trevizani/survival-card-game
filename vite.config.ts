@@ -6,6 +6,7 @@ import {defineConfig} from 'vite';
 export default defineConfig(() => {
   return {
     plugins: [react(), tailwindcss()],
+    base: '/survival-card-game/',
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
