@@ -1,0 +1,6 @@
+{
+  "name": "RE2: The Card Survival - Manual",
+  "description": "Manual oficial de regras, atributos e conteúdo de cartas para o jogo cooperativo RE2: The Card Survival.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
