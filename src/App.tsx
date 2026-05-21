@@ -4,7 +4,6 @@
  */
 
 import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import {
   Biohazard,
   Crosshair,
@@ -64,39 +63,50 @@ export default function App() {
 
   // Deck database
   const deckList = useMemo<CardItem[]>(() => [
-    // Puzzles
-    { id: 'p1', name: 'Plugs de Xadrez', quantity: 6, effectOrDetails: 'Junte as 6 cartas de Plugs de Xadrez para ativar a escapatória.', category: 'puzzle' },
-    { id: 'p2', name: 'Chaves e Engrenagens', quantity: 6, effectOrDetails: 'Junte as 4 Chaves + 2 Engrenagens na Delegacia.', category: 'puzzle' },
-    { id: 'p3', name: 'Medalhões Básicos', quantity: 3, effectOrDetails: 'Junte 3 Medalhões + 3 peças secretas (Derrotando o Super Tirano).', category: 'puzzle' },
+    // Puzzles / Peças
+    { id: 'p1', name: 'Plugs Xadrez', quantity: 6, effectOrDetails: 'Junte e revele os 6 Plugs de Xadrez correspondentes para escapar pelo Esgoto.', category: 'puzzle' },
+    { id: 'p2', name: 'Delegacia', quantity: 6, effectOrDetails: 'Representa as chaves de naipes e engrenagens necessárias para avançar na Delegacia.', category: 'puzzle' },
+    { id: 'p3', name: 'Medalhões', quantity: 3, effectOrDetails: '3 Medalhões Básicos necessários para abrir o Portal do Medalhão.', category: 'puzzle' },
     
     // Utilitários
-    { id: 'u1', name: 'Pochete', quantity: 4, effectOrDetails: '+1 espaço na mão (limite de mão de cartas)', category: 'utility' },
-    { id: 'u2', name: 'Tábuas', quantity: 4, effectOrDetails: 'Anula dano recebido de Zumbi ou Cão Zumbi.', category: 'utility' },
-    { id: 'u3', name: 'Baú', quantity: 4, effectOrDetails: 'Libera o uso do Baú Pessoal na área de jogo.', category: 'utility' },
-    
-    // Recursos
-    { id: 'r1', name: 'Munição', quantity: 12, effectOrDetails: 'Recupera +2 de Defesa (D)', category: 'resource', highlightClass: 'text-yellow-500 font-semibold' },
-    { id: 'r2', name: 'Erva Verde (VD)', quantity: 6, effectOrDetails: 'Recupera +2 de Vida (V)', category: 'resource', highlightClass: 'herb-g font-semibold' },
-    { id: 'r3', name: 'Erva Azul (AZ)', quantity: 6, effectOrDetails: 'Cura Veneno ou anula -1 de dano da próxima Ameaça.', category: 'resource', highlightClass: 'herb-b font-semibold' },
-    { id: 'r4', name: 'Erva Verde (VD) + Verde (VD)', quantity: 2, effectOrDetails: 'Recupera +4 de Vida (V)', category: 'resource', highlightClass: 'herb-g font-semibold font-bold' },
-    { id: 'r5', name: 'Erva Verde (VD) + Vermelha (VR)', quantity: 2, effectOrDetails: 'Recupera Toda a Vida (Full V)', category: 'resource', highlightClass: 'text-green-400 font-bold' },
-    { id: 'r6', name: 'Erva Verde (VD) + Azul (AZ)', quantity: 2, effectOrDetails: 'Recupera +3 de Vida (V) + Antídoto contra Veneno', category: 'resource', highlightClass: 'font-bold' },
-    { id: 'r7', name: 'Erva VD + VD + VD', quantity: 1, effectOrDetails: 'Recupera Toda a Vida (Full V) + 2 de Escudo Temporário', category: 'resource', highlightClass: 'text-green-400 font-bold' },
-    { id: 'r8', name: 'Erva VD + VR + AZ', quantity: 1, effectOrDetails: 'Recupera Toda a Vida (Full V) + Antídoto + Proteção temporária', category: 'resource', highlightClass: 'text-green-400 font-bold' },
-    { id: 'r9', name: 'Spray de Primeiros Socorros', quantity: 1, effectOrDetails: 'Recupera Toda a Vida (Full V)', category: 'resource', highlightClass: 'text-green-400 font-bold' },
-    { id: 'r10', name: 'Armas Variadas', quantity: 13, effectOrDetails: 'Aumentam o Teto Máximo de Defesa (+2 / +4 / +6)', category: 'resource', highlightClass: 'text-blue-400 font-semibold' },
+    { id: 'u1', name: 'Pochete', quantity: 4, effectOrDetails: 'Aumenta permanentemente o limite de cartas em sua mão em +1.', category: 'utility' },
+    { id: 'u2', name: 'Tábuas', quantity: 4, effectOrDetails: 'Utilizadas para barricar e anular ataque de Zumbi ou Cão Zumbi.', category: 'utility' },
+    { id: 'u3', name: 'Baú', quantity: 4, effectOrDetails: 'Permite armazenar e recuperar itens do Baú Coletivo de forma livre.', category: 'utility' },
     
     // Ameaças
-    { id: 't1', name: 'Zumbi', quantity: 10, damage: '-1', effectOrDetails: 'Inimigo básico cambaleante.', category: 'threat' },
-    { id: 't2', name: 'G-Parasita', quantity: 6, damage: '-1', effectOrDetails: 'Espalha parasitas biológicos.', category: 'threat' },
+    { id: 't1', name: 'Zumbi', quantity: 10, damage: '-1', effectOrDetails: 'Inimigo básico cambaleante das ruas de Raccoon City.', category: 'threat' },
+    { id: 't2', name: 'G-Parasita', quantity: 6, damage: '-1', effectOrDetails: 'Infecta sobreviventes com parasitas biológicos perigosos.', category: 'threat' },
     { id: 't3', name: 'Cão Zumbi', quantity: 8, damage: '-2', effectOrDetails: 'Inimigo extremamente ágil e voraz.', category: 'threat' },
-    { id: 't4', name: 'Carnificina (Licker)', quantity: 6, damage: '-3', effectOrDetails: 'Predador cego com garras afiadas em teto de metal.', category: 'threat' },
-    { id: 't5', name: 'G-Adulto', quantity: 3, damage: '-3', effectOrDetails: 'Abominação encontrada nos bueiros e esgotos.', category: 'threat' },
-    { id: 't6', name: 'Zumbi Planta (Ivy)', quantity: 4, damage: '-4 (Aplica Veneno)', effectOrDetails: 'Zumbis fundidos com cipós que injetam toxinas venenosas.', category: 'threat' },
-    { id: 't7', name: 'G (Todas as Fases)', quantity: 5, damage: '-4', effectOrDetails: 'O terrível vírus mutante do Dr. William Birkin.', category: 'threat' },
-    { id: 't8', name: 'Mr. X', quantity: 2, damage: '-5', effectOrDetails: 'Inseguidor indestrutível da Umbrella.', category: 'threat' },
-    { id: 't9', name: 'Super Tirano', quantity: 1, damage: '-9', effectOrDetails: 'Mutação final colossal. Dropa as 3 peças finais dos Medalhões se você conseguir sobreviver ao dano devastador.', category: 'threat' },
+    { id: 't4', name: 'Carníficie', quantity: 6, damage: '-3', effectOrDetails: 'Predador perigoso com garras afiadas que reage a barulhos.', category: 'threat' },
+    { id: 't5', name: 'G-Adulto', quantity: 3, damage: '-3', effectOrDetails: 'Besta viscosa encontrada nadando nas profundezas do Esgoto.', category: 'threat' },
+    { id: 't6', name: 'Zumbi Planta', quantity: 4, damage: '-4 (Veneno)', effectOrDetails: 'Injeta toxinas que infectam o sobrevivente com Veneno.', category: 'threat' },
+    { id: 't7', name: 'Mr. X', quantity: 2, damage: '-5', effectOrDetails: 'Perseguidor indestrutível que busca erradicar os sobreviventes.', category: 'threat' },
+    { id: 't8', name: 'G Fase 1', quantity: 1, damage: '-4', effectOrDetails: 'Primeira mutação de William Birkin armada com cano metálico.', category: 'threat' },
+    { id: 't9', name: 'G Fase 2', quantity: 1, damage: '-4', effectOrDetails: 'Segunda forma de Birkin ostentando uma garra biológica devastadora.', category: 'threat' },
+    { id: 't10', name: 'G Fase 3', quantity: 1, damage: '-4', effectOrDetails: 'Terceira evolução de combate ágil com múltiplos olhos e membros extra.', category: 'threat' },
+    { id: 't11', name: 'G Fase 4', quantity: 1, damage: '-4', effectOrDetails: 'Quarta transformação quadrúpede altamente agressiva.', category: 'threat' },
+    { id: 't12', name: 'G Fase 5', quantity: 1, damage: '-4', effectOrDetails: 'Metamorfose final gigantesca, consumindo o que restar em seu caminho.', category: 'threat' },
+    { id: 't13', name: 'Super Tirano', quantity: 1, damage: '-9', effectOrDetails: 'Poder supremo de Tyrant na mutação limite. Ao ser derrotado, dropa as 3 peças secretas essenciais da fuga.', category: 'threat' },
+
+    // Recursos
+    { id: 'r1', name: 'Munição', quantity: 12, effectOrDetails: 'Uso obrigatório nos disparos. Recupera +2 de Defesa (D).', category: 'resource', highlightClass: 'text-yellow-500 font-semibold' },
+    { id: 'r2', name: 'Erva Verde', quantity: 6, effectOrDetails: 'Recupera +2 de Vida (V).', category: 'resource', highlightClass: 'herb-g font-semibold' },
+    { id: 'r3', name: 'Erva Azul', quantity: 6, effectOrDetails: 'Cura o status de Veneno ou anula -1 de dano de sua próxima Ameaça pura.', category: 'resource', highlightClass: 'herb-b font-semibold' },
+    { id: 'r4', name: 'VD + VD', quantity: 2, effectOrDetails: 'Recupera +4 de Vida (V).', category: 'resource', highlightClass: 'herb-g font-semibold font-bold' },
+    { id: 'r5', name: 'VD + VR', quantity: 2, effectOrDetails: 'Terapia potente de restauração instantânea. Recupera Toda a Vida (Full V).', category: 'resource', highlightClass: 'text-green-400 font-bold' },
+    { id: 'r6', name: 'VD + AZ', quantity: 2, effectOrDetails: 'Recupera +3 de Vida (V) + Filtro curativo contra Veneno.', category: 'resource', highlightClass: 'font-bold' },
+    { id: 'r7', name: 'VD + VD + VD', quantity: 1, effectOrDetails: 'Combinação medicinal superlativa. Recupera Toda a Vida (Full V) + 2 de Escudo Temporário.', category: 'resource', highlightClass: 'text-green-400 font-bold' },
+    { id: 'r8', name: 'VD + VR + AZ', quantity: 1, effectOrDetails: 'Remédio definitivo de laboratório. Recupera Toda a Vida (Full V) + Antídoto completo.', category: 'resource', highlightClass: 'text-green-400 font-bold' },
+    { id: 'r9', name: 'Spray', quantity: 1, effectOrDetails: 'Restaura a saúde celular ao ápice. Recupera Toda a Vida (Full V).', category: 'resource', highlightClass: 'text-green-400 font-bold' },
+    { id: 'r10', name: 'Armas', quantity: 13, effectOrDetails: 'Modifica o seu personagem. Aumenta positivamente o seu Teto Máximo de Defesa (+2 / +4 / +6).', category: 'resource', highlightClass: 'text-blue-400 font-semibold' }
   ], []);
+
+  // Dynamic counter calculations
+  const totalCards = useMemo(() => deckList.reduce((acc, curr) => acc + curr.quantity, 0), [deckList]);
+  const puzzleCount = useMemo(() => deckList.filter(item => item.category === 'puzzle').reduce((acc, curr) => acc + curr.quantity, 0), [deckList]);
+  const utilityCount = useMemo(() => deckList.filter(item => item.category === 'utility').reduce((acc, curr) => acc + curr.quantity, 0), [deckList]);
+  const resourceCount = useMemo(() => deckList.filter(item => item.category === 'resource').reduce((acc, curr) => acc + curr.quantity, 0), [deckList]);
+  const threatCount = useMemo(() => deckList.filter(item => item.category === 'threat').reduce((acc, curr) => acc + curr.quantity, 0), [deckList]);
 
   // Quick select presets for damage simulator
   const presets = [
@@ -161,67 +171,37 @@ export default function App() {
 
       {/* Top Banner indicating restricted access context */}
       <div className="bg-red-950/30 border-b border-red-900/30 py-2 text-center text-xs tracking-widest text-red-500 font-mono">
-        <span className="animate-pulse mr-2">●</span> ARQUIVOS CONFIDENCIAIS UMBRELLA CORP. // DEPARTAMENTO DE DESIGN COOPERATIVO
+        <span className="mr-2">●</span> ARQUIVOS CONFIDENCIAIS UMBRELLA CORP. // DEPARTAMENTO DE DESIGN COOPERATIVO
       </div>
 
       {/* Hero Header */}
       <header className="max-w-4xl mx-auto pt-10 pb-6 px-4 text-center border-b border-red-900/30">
-        <motion.div 
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.6, type: 'spring' }}
-          className="inline-block"
-        >
-          <Biohazard className="text-5xl md:text-6xl text-red-500 mb-4 mx-auto animate-pulse filter drop-shadow-[0_0_15px_rgba(239, 68, 68, 0.4)]" />
-        </motion.div>
-        <motion.h1 
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-          className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-widest text-white mb-2 font-mono"
-        >
+        <div className="inline-block">
+          <Biohazard className="text-5xl md:text-6xl text-red-500 mb-4 mx-auto filter drop-shadow-[0_0_15px_rgba(239, 68, 68, 0.4)]" />
+        </div>
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-widest text-white mb-2 font-mono">
           Resident Evil 2
-        </motion.h1>
-        <motion.h2 
-          initial={{ y: 10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          className="text-xl md:text-2xl text-red-500 tracking-widest font-semibold font-mono"
-        >
+        </h1>
+        <h2 className="text-xl md:text-2xl text-red-500 tracking-widest font-semibold font-mono">
           The Card Survival
-        </motion.h2>
-        <motion.p 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="mt-4 text-zinc-500 font-mono text-xs uppercase max-w-xs mx-auto border border-zinc-800 py-1.5 px-3 rounded-full bg-black/40"
-        >
+        </h2>
+        <p className="mt-4 text-zinc-500 font-mono text-xs uppercase max-w-xs mx-auto border border-zinc-800 py-1.5 px-3 rounded-full bg-black/40">
           Classificação: Alpha Playtest // Restrito
-        </motion.p>
+        </p>
       </header>
 
       {/* Main Container */}
       <main className="max-w-4xl mx-auto px-4 mt-8 space-y-10 relative z-10">
         
         {/* Intro Atmosphere text */}
-        <motion.p 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="text-base md:text-lg text-zinc-400 text-center italic leading-relaxed border-l-2 border-r-2 border-red-900/10 px-6 py-4 rounded bg-zinc-950/20"
-        >
+        <p className="text-base md:text-lg text-zinc-400 text-center italic leading-relaxed border-l-2 border-r-2 border-red-900/10 px-6 py-4 rounded bg-zinc-950/20">
           &ldquo;Bem-vindo a Raccoon City. Este é um jogo cooperativo de sobrevivência, gerenciamento de inventário e coleção de itens. O baralho é a própria cidade tentando matar vocês. Cooperem, gerenciem seus recursos ou juntem-se à horda.&rdquo;
-        </motion.p>
+        </p>
 
         {/* Section 1: Objetivo */}
-        <motion.section 
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          className="card-panel p-6 rounded-lg blood-border"
-        >
+        <section className="card-panel p-6 rounded-lg blood-border">
           <h2 className="text-xl md:text-2xl text-white mb-4 flex items-center gap-3 font-mono">
-            <Crosshair className="text-red-500 w-6 h-6 animate-spin-slow" /> 1. Objetivo do Jogo
+            <Crosshair className="text-red-500 w-6 h-6" /> 1. Objetivo do Jogo
           </h2>
           <p className="mb-5 leading-relaxed text-zinc-300">
             Para vencerem, os sobreviventes precisam cooperar para coletar peças e completar <strong className="text-white font-semibold">um dos três grandes Puzzles</strong> de Raccoon City. Assim que o grupo reunir as peças de um puzzle completo e colocá-las em jogo, a rota de escapatória é ativada.
@@ -244,15 +224,10 @@ export default function App() {
               </p>
             </div>
           </div>
-        </motion.section>
+        </section>
 
         {/* Section 2: Atributos com Simulador Interativo de Transbordamento */}
-        <motion.section 
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          className="card-panel p-6 rounded-lg blood-border"
-        >
+        <section className="card-panel p-6 rounded-lg blood-border">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 pb-2 border-b border-zinc-800">
             <h2 className="text-xl md:text-2xl text-white flex items-center gap-3 font-mono">
               <HeartPulse className="text-red-500 w-6 h-6" /> 2. Atributos Iniciais e Saúde
@@ -293,21 +268,16 @@ export default function App() {
           <div className="bg-red-950/30 border border-red-900/40 p-4 rounded-lg relative overflow-hidden mb-8">
             <div className="absolute top-2 right-2 opacity-5"><AlertTriangle className="text-red-500 w-32 h-32" /></div>
             <h3 className="text-red-400 font-bold mb-2 flex items-center gap-2 font-mono text-sm uppercase tracking-wide">
-              <Droplet className="w-4 h-4 animate-pulse text-red-500" /> Regra do Transbordamento Obrigatório
+              <Droplet className="w-4 h-4 text-red-500" /> Regra do Transbordamento Obrigatório
             </h3>
             <p className="text-sm text-zinc-300 leading-relaxed">
               Quando sofrer dano de uma Ameaça do deck, o dano é reduzido <strong className="text-white font-semibold">obrigatoriamente da sua Defesa (D) primeiro</strong>. Caso sua Defesa seja totalmente zerada (Estado Crítico), qualquer ponto de dano restante ou futuro é subtraído diretamente de sua <strong className="text-red-400">Vida (V)</strong>. Você morre se a Vida chegar a 0.
             </p>
           </div>
-        </motion.section>
+        </section>
 
         {/* Section 3: Inventário */}
-        <motion.section 
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          className="card-panel p-6 rounded-lg blood-border"
-        >
+        <section className="card-panel p-6 rounded-lg blood-border">
           <h2 className="text-xl md:text-2xl text-white mb-4 flex items-center gap-3 font-mono">
             <Briefcase className="text-red-500 w-6 h-6" /> 3. O Inventário e o Baú
           </h2>
@@ -328,15 +298,10 @@ export default function App() {
               </p>
             </div>
           </div>
-        </motion.section>
+        </section>
 
         {/* Section 4: Fluxo do Turno */}
-        <motion.section 
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          className="card-panel p-6 rounded-lg blood-border"
-        >
+        <section className="card-panel p-6 rounded-lg blood-border">
           <h2 className="text-xl md:text-2xl text-white mb-2 flex items-center gap-3 font-mono">
             <Clock className="text-red-500 w-6 h-6" /> 4. O Fluxo do Turno (Sobrevivente)
           </h2>
@@ -364,7 +329,7 @@ export default function App() {
                 <div>
                   <strong className="text-red-500 block mb-2 font-mono uppercase text-sm tracking-wider">Opção B - Atacar Zumbi</strong>
                   <p className="text-xs leading-relaxed text-zinc-300">
-                    Ao invés de puxar cartas desconhecidas, use seus recursos ofensivos para agredir um jogador companheiro infectado que já virou zumbi.
+                    Ao invés de puxar cartas desconhecidas, use seus resources ofensivos para agredir um jogador companheiro infectado que já virou zumbi.
                   </p>
                 </div>
                 <div className="mt-3 text-xs border-t border-zinc-800/60 pt-2.5 text-zinc-400">
@@ -401,17 +366,12 @@ export default function App() {
               </div>
             </div>
           </div>
-        </motion.section>
+        </section>
 
         {/* Section 5: Zumbificação */}
-        <motion.section 
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          className="card-panel p-6 rounded-lg blood-border"
-        >
+        <section className="card-panel p-6 rounded-lg blood-border">
           <h2 className="text-xl md:text-2xl text-white mb-4 flex items-center gap-3 font-mono">
-            <Biohazard className="text-red-500 w-6 h-6 animate-pulse" /> 5. Morte e Zumbificação
+            <Biohazard className="text-red-500 w-6 h-6" /> 5. Morte e Zumbificação
           </h2>
           <p className="mb-4 text-zinc-300 leading-relaxed text-sm md:text-base">
             Quando sua Vida biológica chega a 0, você cai em campo de combate. Mas o horror está longe de terminar! Suas cartas <strong className="text-white font-semibold">não caem no chão</strong> e continuam retidas em sua mão secreta. No início do seu próximo turno, você se reergue como um impiedoso <strong className="text-red-500 font-bold font-mono">Zumbi Imortal</strong>.
@@ -444,15 +404,10 @@ export default function App() {
               </li>
             </ol>
           </div>
-        </motion.section>
+        </section>
 
         {/* Section 6: Puzzles */}
-        <motion.section 
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          className="card-panel p-6 rounded-lg blood-border"
-        >
+        <section className="card-panel p-6 rounded-lg blood-border">
           <h2 className="text-xl md:text-2xl text-white mb-4 flex items-center gap-3 font-mono">
             <Puzzle className="text-red-500 w-6 h-6" /> 6. Os Caminhos da Vitória
           </h2>
@@ -483,7 +438,7 @@ export default function App() {
 
             <div className="bg-zinc-950/70 p-5 rounded-lg border border-yellow-900/30 text-center hover:border-yellow-600/30 hover:-translate-y-1 transition duration-300">
               <span className="inline-block p-2.5 rounded-full bg-yellow-950/30 border border-yellow-800/40 text-yellow-500 mb-3">
-                <Medal className="w-6 h-6 animate-pulse" />
+                <Medal className="w-6 h-6" />
               </span>
               <h4 className="font-bold text-yellow-500 text-sm mb-1.5 tracking-wider uppercase font-mono">Portal do Medalhão</h4>
               <p className="text-xs text-zinc-400 leading-relaxed">
@@ -491,20 +446,17 @@ export default function App() {
               </p>
             </div>
           </div>
-        </motion.section>
+        </section>
 
         {/* Section 7: Deck */}
-        <motion.section 
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
+        <section 
           className="card-panel p-6 rounded-lg blood-border"
           id="deck-contents"
         >
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 pb-3 border-b border-zinc-800">
             <div>
               <h2 className="text-xl md:text-2xl text-white flex items-center gap-3 font-mono mb-1">
-                <Layers className="text-red-500 w-6 h-6" /> 7. Conteúdo do Deck (118 Cartas)
+                <Layers className="text-red-500 w-6 h-6" /> 7. Conteúdo do Deck ({totalCards} Cartas)
               </h2>
               <p className="text-xs text-zinc-500 font-mono uppercase">
                 Arquitetura detalhada do baralho de jogo
@@ -513,11 +465,11 @@ export default function App() {
             
             {/* Real-time category pills counters */}
             <div className="flex flex-wrap gap-1.5 text-[10px] font-mono">
-              <span className="px-2 py-0.5 bg-zinc-950 text-zinc-400 rounded border border-zinc-800">Total: 118</span>
-              <span className="px-2 py-0.5 bg-purple-950/30 text-purple-400 rounded border border-purple-900/30">Puzzles: 15</span>
-              <span className="px-2 py-0.5 bg-blue-950/30 text-blue-400 rounded border border-blue-900/30">Utilitários: 12</span>
-              <span className="px-2 py-0.5 bg-green-950/30 text-green-400 rounded border border-green-900/30">Recursos: 31</span>
-              <span className="px-2 py-0.5 bg-red-950/30 text-red-400 rounded border border-red-900/30">Ameaças: 60</span>
+              <span className="px-2 py-0.5 bg-zinc-950 text-zinc-400 rounded border border-zinc-800">Total: {totalCards}</span>
+              <span className="px-2 py-0.5 bg-purple-950/30 text-purple-400 rounded border border-purple-900/30">Peças: {puzzleCount}</span>
+              <span className="px-2 py-0.5 bg-blue-950/30 text-blue-400 rounded border border-blue-900/30">Utilitários: {utilityCount}</span>
+              <span className="px-2 py-0.5 bg-green-950/30 text-green-400 rounded border border-green-900/30">Recursos: {resourceCount}</span>
+              <span className="px-2 py-0.5 bg-red-950/30 text-red-400 rounded border border-red-900/30">Ameaças: {threatCount}</span>
             </div>
           </div>
 
@@ -541,35 +493,35 @@ export default function App() {
                 onClick={() => { setSelectedCategory('all'); }}
                 className={`text-xs px-2.5 py-1 rounded border font-mono transition cursor-pointer ${selectedCategory === 'all' ? 'bg-red-950/50 border-red-800 text-red-400 font-bold' : 'bg-transparent border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'}`}
               >
-                Tudo ({deckList.reduce((acc, curr) => acc + curr.quantity, 0)})
+                Tudo ({totalCards})
               </button>
               <button
                 type="button"
                 onClick={() => { setSelectedCategory('puzzle'); }}
                 className={`text-xs px-2.5 py-1 rounded border font-mono transition cursor-pointer ${selectedCategory === 'puzzle' ? 'bg-purple-950/50 border-purple-800 text-purple-400 font-bold' : 'bg-transparent border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'}`}
               >
-                Puzzles (15)
+                Peças ({puzzleCount})
               </button>
               <button
                 type="button"
                 onClick={() => { setSelectedCategory('utility'); }}
                 className={`text-xs px-2.5 py-1 rounded border font-mono transition cursor-pointer ${selectedCategory === 'utility' ? 'bg-blue-950/50 border-blue-800 text-blue-400 font-bold' : 'bg-transparent border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'}`}
               >
-                Utilitários (12)
+                Utilitários ({utilityCount})
               </button>
               <button
                 type="button"
                 onClick={() => { setSelectedCategory('resource'); }}
                 className={`text-xs px-2.5 py-1 rounded border font-mono transition cursor-pointer ${selectedCategory === 'resource' ? 'bg-green-950/50 border-green-800 text-green-400 font-bold' : 'bg-transparent border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'}`}
               >
-                Recursos (31)
+                Recursos ({resourceCount})
               </button>
               <button
                 type="button"
                 onClick={() => { setSelectedCategory('threat'); }}
                 className={`text-xs px-2.5 py-1 rounded border font-mono transition cursor-pointer ${selectedCategory === 'threat' ? 'bg-red-950/50 border-red-800 text-red-500 font-bold' : 'bg-transparent border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'}`}
               >
-                Ameaças (60)
+                Ameaças ({threatCount})
               </button>
             </div>
           </div>
@@ -638,11 +590,11 @@ export default function App() {
               </table>
             </div>
           </div>
-        </motion.section>
+        </section>
 
         {/* Footer bottom decorative signoff */}
         <div className="text-center mt-12 pb-8">
-          <p className="text-red-600 font-mono tracking-[0.25em] opacity-40 text-xs md:text-sm animate-pulse">
+          <p className="text-red-600 font-mono tracking-[0.25em] opacity-40 text-xs md:text-sm">
             // GOOD LUCK, SURVIVORS //
           </p>
           <p className="text-zinc-600 text-[10px] font-mono mt-2 uppercase tracking-widest">
