@@ -586,56 +586,54 @@ export default function App() {
                   </tr>
                 </thead>
                 <tbody>
-                  <AnimatePresence mode="popLayout text-xs">
-                    {filteredDeck.length === 0 ? (
-                      <tr>
-                        <td colSpan={4} className="p-8 text-center text-zinc-500 italic font-mono">
-                          Nenhuma carta encontrada para o critério digitado.
+                  {filteredDeck.length === 0 ? (
+                    <tr>
+                      <td colSpan={4} className="p-8 text-center text-zinc-500 italic font-mono">
+                        Nenhuma carta encontrada para o critério digitado.
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredDeck.map((item) => (
+                      <tr key={item.id} className="transition-colors">
+                        <td className="p-3">
+                          <span className={`block font-semibold ${item.highlightClass || 'text-zinc-100'}`}>
+                            {item.name}
+                          </span>
+                          <span className="text-[10px] text-zinc-500 uppercase font-mono tracking-widest block mt-0.5">
+                            {item.category === 'puzzle' && '🧩 Puzzle'}
+                            {item.category === 'utility' && '⚙️ Utilitário'}
+                            {item.category === 'resource' && '🩹 Recurso'}
+                            {item.category === 'threat' && '☣️ Ameaça'}
+                          </span>
+                        </td>
+                        <td className="p-3 text-center text-sm font-bold font-mono text-zinc-400">
+                          {item.quantity}
+                        </td>
+                        <td className="p-3 text-center">
+                          {item.damage ? (
+                            <span className="px-2 py-0.5 rounded bg-red-950/50 text-red-400 border border-red-900/40 font-bold font-mono text-xs">
+                              {item.damage}
+                            </span>
+                          ) : item.category === 'puzzle' ? (
+                            <span className="px-2 py-0.5 rounded bg-purple-950/20 text-purple-400 border border-purple-900/30 text-[10px] font-mono">
+                              Peça
+                            </span>
+                          ) : item.category === 'utility' ? (
+                            <span className="px-2 py-0.5 rounded bg-blue-950/20 text-blue-400 border border-blue-900/30 text-[10px] font-mono">
+                              Utilidade
+                            </span>
+                          ) : (
+                            <span className="px-2 py-0.5 rounded bg-green-950/20 text-green-400 border border-green-900/30 text-[10px] font-mono">
+                              Suporte
+                            </span>
+                          )}
+                        </td>
+                        <td className="p-3 text-xs leading-relaxed text-zinc-300">
+                          {item.effectOrDetails}
                         </td>
                       </tr>
-                    ) : (
-                      filteredDeck.map((item) => (
-                        <tr key={item.id} className="transition-colors">
-                          <td className="p-3">
-                            <span className={`block font-semibold ${item.highlightClass || 'text-zinc-100'}`}>
-                              {item.name}
-                            </span>
-                            <span className="text-[10px] text-zinc-500 uppercase font-mono tracking-widest block mt-0.5">
-                              {item.category === 'puzzle' && '🧩 Puzzle'}
-                              {item.category === 'utility' && '⚙️ Utilitário'}
-                              {item.category === 'resource' && '🩹 Recurso'}
-                              {item.category === 'threat' && '☣️ Ameaça'}
-                            </span>
-                          </td>
-                          <td className="p-3 text-center text-sm font-bold font-mono text-zinc-400">
-                            {item.quantity}
-                          </td>
-                          <td className="p-3 text-center">
-                            {item.damage ? (
-                              <span className="px-2 py-0.5 rounded bg-red-950/50 text-red-400 border border-red-900/40 font-bold font-mono text-xs">
-                                {item.damage}
-                              </span>
-                            ) : item.category === 'puzzle' ? (
-                              <span className="px-2 py-0.5 rounded bg-purple-950/20 text-purple-400 border border-purple-900/30 text-[10px] font-mono">
-                                Peça
-                              </span>
-                            ) : item.category === 'utility' ? (
-                              <span className="px-2 py-0.5 rounded bg-blue-950/20 text-blue-400 border border-blue-900/30 text-[10px] font-mono">
-                                Utilidade
-                              </span>
-                            ) : (
-                              <span className="px-2 py-0.5 rounded bg-green-950/20 text-green-400 border border-green-900/30 text-[10px] font-mono">
-                                Suporte
-                              </span>
-                            )}
-                          </td>
-                          <td className="p-3 text-xs leading-relaxed text-zinc-300">
-                            {item.effectOrDetails}
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </AnimatePresence>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
